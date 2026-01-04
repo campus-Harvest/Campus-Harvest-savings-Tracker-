@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Savings Program - Member Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981; /* Green vegetable green */
+            --primary-light: #d1fae5;
+            --primary-dark: #059669;
+            --secondary: #3b82f6; /* Blue accent */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --border: #e5e7eb;
+            --card-bg: #ffffff;
+            --body-bg: #f9fafb;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--body-bg);
+            line-height: 1.5;
+            font-size: 16px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Search Page - Initially Visible */
+        .search-page {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .search-page.hidden {
+            display: none;
+        }
+
+        .hero {
+            padding: 40px 0;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        /* Search Section */
+        .search-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .search-note {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            text-align: center;
+        }        
+
+        /* Status Messages */
+        .status-message {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            max-width: 600px;
+            margin: 0 auto 60px;
+            text-align: center;
+            display: none;
+        }
+
+        .status-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .status-message h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .status-message p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(16, 185, 129, 0.2);
+        }
+
+        /* Dashboard Container - Initially Hidden */
+        .dashboard-container {
+            display: none;
+            padding: 40px 0 60px;
+        }
+
+        .dashboard-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Member Profile */
+        .member-profile {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+        }
+
+        .member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .member-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .verified-badge {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .member-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Savings Summary Cards */
+        .savings-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon.days-paid {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+        }
+
+        .card-icon.days-remaining {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--secondary);
+        }
+
+        .card-icon.total-saved {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 15px;
+            font-size: 0.875rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-color.paid {
+            background-color: var(--primary);
+        }
+
+        .legend-color.unpaid {
+            background-color: var(--border);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 992px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .calendar-day.paid {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .calendar-day.unpaid {
+            background-color: rgba(229, 231, 235, 0.5);
+            color: var(--text-light);
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05);
+        }
+
+        .day-number {
+            font-size: 0.875rem;
+        }
+
+        /* Referral Section */
+        .referral-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+        }
+
+        .referral-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .referral-card {
+            background-color: var(--primary-light);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .referral-card h3 {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .referral-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .referral-code {
+            font-family: monospace;
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: var(--radius-md);
+            border: 1px dashed var(--border);
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Rules Section */
+        .rules-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .rule-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .rule-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .rule-item h3 {
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+
+        .rule-item p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .search-section {
+                padding: 30px 20px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                padding: 16px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow-md);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .calendar-legend {
+                align-self: flex-start;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Animation for dashboard display */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-message.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <div class="logo-icon">CH$</div>
+                    <div class="logo-text">Campus Harvest Fund</div>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links" id="navLinks">
+                    <a href="#" id="homeLink"><i class="fas fa-home"></i> Home</a>
+                    <a href="#rules"><i class="fas fa-info-circle"></i> Program Rules</a>
+                    <a href="#"><i class="fas fa-question-circle"></i> FAQ</a>
+                    <a href="#"><i class="fas fa-phone-alt"></i> Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Search Page -->
+    <section class="search-page" id="searchPage">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Track Your Campus Campus Harvest -90 Days FoodstuffsSavings </h1>
+                <p>Enter your Registration Number to view your savings progress, contribution calendar, and referral earnings.</p>
+            </section>
+
+            <!-- Search Sesction -->
+            <section class="search-section">
+                <h2>Check Your Savings Status</h2>
+                <form class="search-form" id="searchForm">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="regNoInput" 
+                        placeholder="Enter your Registration Number" 
+                        required
+                    >
+                    <button type="submit" class="search-btn" id="searchBtn">
+                        <span id="btnText">Check Status</span>
+                        <div class="loading" id="loadingSpinner" style="display: none;"></div>
+                    </button>
+                </form>
+                <p class="search-note">This is a read-only dashboard. For payment issues, contact the admin team.</p>
+            </section>
+        </div>
+    </section>
+
+    <!-- Status Messages -->
+    <div class="container">
+        <div class="status-message" id="notFoundMessage">
+            <div class="status-icon">🔍</div>
+            <h2>No Record Found</h2>
+            <p>No record found for the Registration Number entered. Please confirm your Registration Number and try again.</p>
+            <button class="back-btn" onclick="showSearchPage()">Try Again</button>
+        </div>
+
+        <div class="status-message" id="pendingMessage">
+            <div class="status-icon">⏳</div>
+            <h2>Registration Pending Approval</h2>
+            <p>Check back later — your registration is not yet verified.</p>
+            <p class="search-note" style="margin-top: 15px;">You'll be able to view your savings dashboard once your registration is approved (Column O = verified).</p>
+            <button class="back-btn" onclick="showSearchPage()">Check Another</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboard">
+        <div class="container">
+            <!-- Member Profile -->
+            <section class="member-profile">
+                <div class="member-header">
+                    <h2>Member Profile</h2>
+                    <div class="verified-badge">
+                        <i class="fas fa-check-circle"></i> Verified Member
+                    </div>
+                </div>
+                <div class="member-details" id="memberDetails">
+                    <!-- Details will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Savings Summary -->
+            <section class="savings-summary">
+                <div class="summary-card">
+                    <div class="card-icon days-paid">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="card-value" id="daysPaid">0</div>
+                    <div class="card-label">Days Paid</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon days-remaining">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="card-value" id="daysRemaining">90</div>
+                    <div class="card-label">Days Remaining</div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon total-saved">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="card-value" id="totalSaved">₦0</div>
+                    <div class="card-label">Total Saved</div>
+                </div>
+            </section>
+
+            <!-- Contribution Calendar -->
+            <section class="calendar-section">
+                <div class="section-header">
+                    <h2>90-Day Contribution Calendar</h2>
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-color paid"></div>
+                            <span>Paid</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color unpaid"></div>
+                            <span>Unpaid / Future</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar days will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Referral Section -->
+            <section class="referral-section">
+                <h2>Referral Program</h2>
+                <div class="referral-cards">
+                    <div class="referral-card">
+                        <h3>Your Referral Code</h3>
+                        <div class="referral-code" id="referralCode">LOADING...</div>
+                    </div>
+                    <div class="referral-card">
+                        <h3>Number of Referrals</h3>
+                        <div class="value" id="referralCount">0</div>
+                    </div>
+                    <div class="referral-card">
+                        <h3>Referral Earnings</h3>
+                        <div class="value" id="referralEarnings">₦0</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rules & Transparency -->
+            <section class="rules-section" id="rules">
+                <h2>Program Rules & Transparency</h2>
+                <div class="rules-grid">
+                    <div class="rule-item">
+                        <div class="rule-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>90-Day Duration</h3>
+                        <p>The savings program runs for exactly 90 days from your registration date.</p>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>Daily Contribution</h3>
+                        <p>Each member contributes a fixed amount daily. The exact amount is communicated upon registration.</p>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <h3>Missed Payments</h3>
+                        <p>Missed payments can be made up within 7 days without penalty. After that, a small fee applies.</p>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3>Withdrawal Rules</h3>
+                        <p>Full withdrawal is available after completing 90 days. Partial withdrawals have a 5% processing fee.</p>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Admin Contact</h3>
+                        <p>For issues: Email savings@campus.edu or WhatsApp +234 902 864 0574(Mon-Fri, 9am-5pm).</p>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Data Security</h3>
+                        <p>Your data is securely stored and only accessible to you and authorized program administrators.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    &copy; 2025 Campus Savings Program. All rights reserved.
+                </div>
+                <div class="footer-links">
+                    <a href="#" onclick="showSearchPage()">Home</a>
+                    <a href="#rules">Program Rules</a>
+                    <a href="#">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // CONFIGURATION - REPLACE WITH YOUR SHEET ID
+        // =============================================
+        const GOOGLE_SHEET_ID = '1tcalY1s81syBIfgW7_WYKDUfjvOE2ygxddEuJxWfJ_4'; // Replace with your Google Sheet ID
+        const GOOGLE_SHEET_NAME = 'Form responses 1'; // Replace if your sheet has a different name
+        
+        // =============================================
+        // DOM Elements
+        // =============================================
+        const searchPage = document.getElementById('searchPage');
+        const searchForm = document.getElementById('searchForm');
+        const regNoInput = document.getElementById('regNoInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const btnText = document.getElementById('btnText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const dashboard = document.getElementById('dashboard');
+        const notFoundMessage = document.getElementById('notFoundMessage');
+        const pendingMessage = document.getElementById('pendingMessage');
+        const homeLink = document.getElementById('homeLink');
+        
+        // Dashboard elements
+        const memberDetails = document.getElementById('memberDetails');
+        const daysPaidEl = document.getElementById('daysPaid');
+        const daysRemainingEl = document.getElementById('daysRemaining');
+        const totalSavedEl = document.getElementById('totalSaved');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const referralCodeEl = document.getElementById('referralCode');
+        const referralCountEl = document.getElementById('referralCount');
+        const referralEarningsEl = document.getElementById('referralEarnings');
+
+        // =============================================
+        // Helper Functions
+        // =============================================
+        function showSearchPage() {
+            searchPage.classList.remove('hidden');
+            dashboard.classList.remove('active');
+            notFoundMessage.classList.remove('active');
+            pendingMessage.classList.remove('active');
+            regNoInput.value = '';
+            regNoInput.focus();
+        }
+
+        function hideSearchPage() {
+            searchPage.classList.add('hidden');
+        }
+
+        function showLoading() {
+            btnText.textContent = "Searching...";
+            loadingSpinner.style.display = "inline-block";
+            searchBtn.disabled = true;
+        }
+
+        function hideLoading() {
+            btnText.textContent = "Check Status";
+            loadingSpinner.style.display = "none";
+            searchBtn.disabled = false;
+        }
+
+        // =============================================
+        // Google Sheets API Integration
+        // =============================================
+        async function fetchDataFromGoogleSheets() {
+    try {
+        // Replace with your Apps Script web app URL
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbwUQc1omxxGhUzA4M3UsBs6AbYv_KwcsYW_rRj-GXmQVjk3vHzjIfy-fWk_wuZngt/exec';
+        
+        const response = await fetch(APPS_SCRIPT_URL);
+        const data = await response.json();
+        
+        // Convert to the format expected by the findMemberByRegNo function
+        const sheetData = {
+            rows: data.rows.map(row => ({
+                c: data.headers.map(header => ({ v: row[header] }))
+            }))
+        };
+        
+        return sheetData;
+    } catch (error) {
+        console.error('Error fetching data from Apps Script:', error);
+        return null;
+    }
+}
+
+        function findMemberByRegNo(sheetData, regNo) {
+            if (!sheetData || !sheetData.rows) return null;
+            
+            // Column indices (0-based)
+            // A=0 (Timestamp), B=1 (Agree to Rules), C=2 (Full Name), D=3 (Reg No), 
+            // O=14 (Registration Status), etc.
+            
+            for (const row of sheetData.rows) {
+                const rowData = row.c;
+                
+                // Check if this row has data in column D (Reg No)
+                if (rowData[3] && rowData[3].v) {
+                    const currentRegNo = rowData[3].v.toString().trim().toUpperCase();
+                    const searchRegNo = regNo.trim().toUpperCase();
+                    
+                    if (currentRegNo === searchRegNo) {
+                        return {
+                            timestamp: rowData[0]?.v || '',
+                            fullName: rowData[2]?.v || '',
+                            regNo: rowData[3]?.v || '',
+                            department: rowData[4]?.v || '',
+                            level: rowData[5]?.v || '',
+                            email: rowData[6]?.v || '',
+                            whatsapp: rowData[7]?.v || '',
+                            referredBy: rowData[8]?.v || '',
+                            paymentReceipt: rowData[9]?.v || '',
+                            campusRegNo: rowData[10]?.v || '',
+                            referralCode: rowData[11]?.v || '',
+                            referralCount: parseInt(rowData[12]?.v || 0),
+                            referralEarnings: parseFloat(rowData[13]?.v || 0),
+                            registrationStatus: rowData[14]?.v || 'pending',
+                            // Days Paid (Column DB = column 105)
+                            daysPaid: parseInt(rowData[105]?.v || 0),
+                            // Days Remaining (Column DC = column 106)
+                            daysRemaining: parseInt(rowData[106]?.v || 90),
+                            // Total Saved (Column DD = column 107)
+                            totalSaved: parseFloat(rowData[107]?.v || 0),
+                            // Payment status for days 1-90 (columns P-DA = columns 15-105)
+                            paymentStatus: Array.from({length: 90}, (_, i) => {
+                                const dayIndex = i + 15; // Column P starts at index 15
+                                return rowData[dayIndex]?.v === 'PAID' ? 'PAID' : 'UNPAID';
+                            })
+                        };
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        // =============================================
+        // Display Functions
+        // =============================================
+        function displayMemberDashboard(member) {
+            // Populate member details
+            memberDetails.innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-value">${member.fullName}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Department</div>
+                    <div class="detail-value">${member.department}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Level</div>
+                    <div class="detail-value">${member.level}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Registration Number</div>
+                    <div class="detail-value">${member.regNo}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Campus Registration Number</div>
+                    <div class="detail-value">${member.campusRegNo || 'N/A'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">${member.email}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">WhatsApp Number</div>
+                    <div class="detail-value">${member.whatsapp}</div>
+                </div>
+            `;
+            
+            // Populate savings summary
+            daysPaidEl.textContent = member.daysPaid;
+            daysRemainingEl.textContent = member.daysRemaining;
+            totalSavedEl.textContent = `₦${member.totalSaved.toLocaleString()}`;
+            
+            // Populate referral section
+            referralCodeEl.textContent = member.referralCode || 'N/A';
+            referralCountEl.textContent = member.referralCount;
+            referralEarningsEl.textContent = `₦${member.referralEarnings.toLocaleString()}`;
+            
+            // Populate calendar
+            calendarGrid.innerHTML = '';
+            for (let i = 0; i < 90; i++) {
+                const day = i + 1;
+                const status = member.paymentStatus[i];
+                const dayElement = document.createElement('div');
+                dayElement.className = `calendar-day ${status === 'PAID' ? 'paid' : 'unpaid'}`;
+                dayElement.innerHTML = `
+                    <div class="day-number">${day}</div>
+                    <div class="day-status">${status === 'PAID' ? '✓' : ''}</div>
+                `;
+                
+                // Add tooltip
+                dayElement.title = `Day ${day}: ${status}`;
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        // =============================================
+        // Main Search Function
+        // =============================================
+        async function handleSearch(event) {
+            event.preventDefault();
+            
+            const regNo = regNoInput.value.trim();
+            
+            if (!regNo) {
+                alert("Please enter your Registration Number (Column D)");
+                return;
+            }
+            
+            // Show loading state
+            showLoading();
+            
+            try {
+                // Fetch data from Google Sheets
+                const sheetData = await fetchDataFromGoogleSheets();
+                
+                if (!sheetData) {
+                    throw new Error('Could not fetch data from the spreadsheet');
+                }
+                
+                // Find member by Registration Number (Column D)
+                const member = findMemberByRegNo(sheetData, regNo);
+                
+                // Hide loading state
+                hideLoading();
+                
+                if (!member) {
+                    // Member not found
+                    hideSearchPage();
+                    dashboard.classList.remove('active');
+                    notFoundMessage.classList.add('active');
+                    pendingMessage.classList.remove('active');
+                    return;
+                }
+                
+                // Check registration status (Column O)
+                if (member.registrationStatus.toLowerCase() !== 'verified') {
+                    // Registration pending
+                    hideSearchPage();
+                    dashboard.classList.remove('active');
+                    notFoundMessage.classList.remove('active');
+                    pendingMessage.classList.add('active');
+                    return;
+                }
+                
+                // Member found and verified - show dashboard
+                hideSearchPage();
+                notFoundMessage.classList.remove('active');
+                pendingMessage.classList.remove('active');
+                displayMemberDashboard(member);
+                dashboard.classList.add('active');
+                
+                // Scroll to top of dashboard
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                
+                // Fallback to demo data for testing if API fails
+                alert('Unable to connect to the database. Please try again later or contact support.');
+                
+                // For demo purposes only - remove in production
+                // Uncomment the lines below for testing without Google Sheets
+                /*
+                hideLoading();
+                const demoMember = {
+                    fullName: "Demo User",
+                    regNo: regNo,
+                    department: "Computer Science",
+                    level: "300",
+                    email: "demo@campus.edu",
+                    whatsapp: "+234 800 123 4567",
+                    campusRegNo: "CAMPUS-2023-00123",
+                    referralCode: "CAMPUS-DEMO-123",
+                    referralCount: 5,
+                    referralEarnings: 2500,
+                    registrationStatus: "verified",
+                    daysPaid: 45,
+                    daysRemaining: 45,
+                    totalSaved: 45000,
+                    paymentStatus: Array.from({length: 90}, (_, i) => i < 45 ? "PAID" : "UNPAID")
+                };
+                
+                if (regNo.toUpperCase().includes('PENDING')) {
+                    demoMember.registrationStatus = 'pending';
+                    hideSearchPage();
+                    dashboard.classList.remove('active');
+                    notFoundMessage.classList.remove('active');
+                    pendingMessage.classList.add('active');
+                } else {
+                    hideSearchPage();
+                    notFoundMessage.classList.remove('active');
+                    pendingMessage.classList.remove('active');
+                    displayMemberDashboard(demoMember);
+                    dashboard.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                */
+            }
+        }
+
+        // =============================================
+        // Event Listeners
+        // =============================================
+        searchForm.addEventListener('submit', handleSearch);
+        homeLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSearchPage();
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#navLinks') && !e.target.closest('#mobileMenuBtn')) {
+                document.getElementById('navLinks').classList.remove('active');
+            }
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            regNoInput.focus();
+        });
+    </script>
+</body>
+</html>
